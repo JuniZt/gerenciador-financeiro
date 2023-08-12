@@ -7,6 +7,7 @@ package gestor.financeiro.view;
 import gestor.financeiro.model.dao.UsuarioDao;
 import gestor.financeiro.model.dao.Validacao;
 import gestor.financeiro.model.dto.UsuarioDto;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 /**
@@ -68,6 +69,14 @@ public class Login extends javax.swing.JFrame {
         txtUsuario.setForeground(new java.awt.Color(204, 204, 204));
         txtUsuario.setText(" nome de usuário ou email");
         txtUsuario.setBorder(null);
+        txtUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtUsuarioMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                txtUsuarioMouseExited(evt);
+            }
+        });
         txtUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUsuarioActionPerformed(evt);
@@ -81,6 +90,11 @@ public class Login extends javax.swing.JFrame {
         pswSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pswSenhaActionPerformed(evt);
+            }
+        });
+        pswSenha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                pswSenhaKeyPressed(evt);
             }
         });
 
@@ -258,29 +272,43 @@ public class Login extends javax.swing.JFrame {
         String campoUsuario = txtUsuario.getText();
         String campoSenha = String.valueOf(pswSenha.getPassword());
         
-        try{
-            boolean validouUsuario = new Validacao().validarUsuario(campoUsuario, campoSenha);
-            boolean validouEmail = new Validacao().validarUsuarioPorEmail(campoUsuario, campoSenha);
+        if(!campoUsuario.isBlank() || !campoSenha.isBlank()){
+            try{
+                boolean validouUsuario = new Validacao().validarUsuario(campoUsuario, campoSenha);
+                boolean validouEmail = new Validacao().validarUsuarioPorEmail(campoUsuario, campoSenha);
             
-            if (validouUsuario) {
-                JOptionPane.showMessageDialog(null,"Usuário válido!");
-            }else if(validouEmail){
-                JOptionPane.showMessageDialog(null,"Usuário válido!");
-            } 
-            else {
-                JOptionPane.showMessageDialog(null,"Usuário inválido!");
+                if (validouUsuario) {
+                    JOptionPane.showMessageDialog(null,"Logado!");
+                }else if(validouEmail){
+                    JOptionPane.showMessageDialog(null,"Logado!");
+                } 
+                else {
+                    JOptionPane.showMessageDialog(null,"nome de usuário ou senha inválido!");
+                }
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null,"Erro ao tentar validar o usuário!");
             }
-        }catch(Exception e){
-            
         }
-        
-      
-        
-        
-        
+        else {
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos corretamente.");
+        }   
         
         
     }//GEN-LAST:event_btnEntrarActionPerformed
+
+    private void txtUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtUsuarioMouseClicked
+        txtUsuario.setText("");
+    }//GEN-LAST:event_txtUsuarioMouseClicked
+
+    private void txtUsuarioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtUsuarioMouseExited
+
+    }//GEN-LAST:event_txtUsuarioMouseExited
+
+    private void pswSenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pswSenhaKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            btnEntrar.doClick();
+        }
+    }//GEN-LAST:event_pswSenhaKeyPressed
 
     /**
      * @param args the command line arguments
