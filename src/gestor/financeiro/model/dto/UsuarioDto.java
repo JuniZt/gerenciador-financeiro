@@ -4,8 +4,8 @@
  */
 package gestor.financeiro.model.dto;
 
-import java.io.Serializable;
-import java.util.Objects;
+
+import java.time.LocalDate;
 
 
 /**
@@ -20,20 +20,23 @@ public class UsuarioDto {
     
     private String email;
     
-    private String usuario;
+    private String login;
     
     private String senha;
-
+    
+    private LocalDate data;
+    
+    
     public UsuarioDto() {
     }
 
-    public UsuarioDto(Long id, String usuario, String senha) {
+    public UsuarioDto(Long id, String email, String login, String senha, LocalDate data) {
         this.id = id;
-        this.usuario = usuario;
+        this.email = email;
+        this.login = login;
         this.senha = senha;
+        this.data = data;
     }
-    
-    
 
     public Long getId() {
         return id;
@@ -42,20 +45,21 @@ public class UsuarioDto {
     public void setId(Long id) {
         this.id = id;
     }
-    
-    public String getEmail(){
+
+    public String getEmail() {
         return email;
     }
-    
-    public void setEmail(String email){
+
+    public void setEmail(String email) {
         this.email = email;
     }
-    public String getUsuario() {
-        return usuario;
+
+    public String getLogin() {
+        return login;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getSenha() {
@@ -66,30 +70,15 @@ public class UsuarioDto {
         this.senha = senha;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 61 * hash + Objects.hashCode(this.id);
-        return hash;
+    public LocalDate getData() {
+        return data;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final UsuarioDto other = (UsuarioDto) obj;
-        return Objects.equals(this.id, other.id);
+    public void setData(LocalDate data) {
+        this.data = data;
     }
 
     
-
   
     
 }

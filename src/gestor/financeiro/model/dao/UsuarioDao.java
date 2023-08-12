@@ -8,6 +8,8 @@ import gestor.financeiro.model.dto.UsuarioDto;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,11 +30,14 @@ public class UsuarioDao {
         
         try(Connection conn = gerenciadorBd.conectar();
                 PreparedStatement comando = conn.prepareStatement(
-                "INSERT INTO usuario (email, usuario, senha) VALUES (?,?,?) "))
+                "INSERT INTO usuario (email, login, senha, data) VALUES (?,?,?,?) "))
         {
             comando.setString(1, usuario.getEmail());
-            comando.setString(2, usuario.getUsuario());
+            comando.setString(2, usuario.getLogin());
             comando.setString(3, usuario.getSenha());
+            LocalDate novaData =  LocalDate.now();
+            Date sqlDate = Date.valueOf(novaData);
+            comando.setDate(4, sqlDate);
             comando.executeUpdate();
         }
     }
@@ -43,7 +48,7 @@ public class UsuarioDao {
 
         try (Connection conexao = gerenciadorBd.conectar(); 
              PreparedStatement comando = conexao.prepareStatement(
-             "SELECT id, email, usuario, senha FROM usuario");
+             "SELECT id, email, login, senha FROM usuario");
              ResultSet tabela = comando.executeQuery()
             ) 
         {
@@ -52,7 +57,7 @@ public class UsuarioDao {
 
                 usuario.setId(tabela.getLong("id"));
                 usuario.setEmail(tabela.getString("email"));
-                usuario.setUsuario(tabela.getString("usuario"));
+                usuario.setLogin(tabela.getString("usuario"));
                 usuario.setSenha(tabela.getString("senha"));
 
                 listaDeClientes.add(usuario);
@@ -66,12 +71,12 @@ public class UsuarioDao {
 
         try (Connection conexao = gerenciadorBd.conectar(); 
              PreparedStatement comando = conexao.prepareStatement(
-             "SELECT email, usuario, senha FROM usuario WHERE id = ? OR WHERE email = ? OR WHERE usuario = ?")
+             "SELECT email, login, senha FROM usuario WHERE id = ? OR WHERE email = ? OR WHERE usuario = ?")
             ) 
         {
             comando.setLong(1, usuario.getId());
             comando.setString(2, usuario.getEmail());
-            comando.setString(3, usuario.getUsuario());
+            comando.setString(3, usuario.getLogin());
   
             ResultSet tabela = comando.executeQuery();
 
@@ -80,7 +85,7 @@ public class UsuarioDao {
             if (tabela.next()) {
             
                 usuario.setEmail(tabela.getString("email"));
-                usuario.setUsuario(tabela.getString("usuario"));
+                usuario.setLogin(tabela.getString("login"));
                 usuario.setSenha(tabela.getString("senha"));
                 
                 existeUsuario = true;
@@ -98,11 +103,11 @@ public class UsuarioDao {
     public void alterar(UsuarioDto usuario) throws Exception {
         try (Connection conexao = gerenciadorBd.conectar(); 
              PreparedStatement comando = conexao.prepareStatement(
-             "UPDATE usuario SET email = ?, usuario = ?, senha = ? WHERE id = ?")
+             "UPDATE usuario SET email = ?, login = ?, senha = ? WHERE id = ?")
             ) 
         {
             comando.setString(1, usuario.getEmail());
-            comando.setString(2, usuario.getUsuario());
+            comando.setString(2, usuario.getLogin());
             comando.setString(3, usuario.getSenha());
             comando.setLong(4, usuario.getId());
 
