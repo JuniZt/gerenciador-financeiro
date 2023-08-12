@@ -21,7 +21,7 @@ public class GestorFinanceiro {
         
         UsuarioDto usuario = new UsuarioDto();
         usuario.setEmail("sergiosantana@hotmail.com");
-        usuario.setUsuario("ssr");
+        usuario.setLogin("ssr");
         usuario.setSenha("12345");
         
         new UsuarioDao().cadastrar(usuario);
