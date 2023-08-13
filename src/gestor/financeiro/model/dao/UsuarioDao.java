@@ -30,7 +30,7 @@ public class UsuarioDao {
         
         try(Connection conn = gerenciadorBd.conectar();
                 PreparedStatement comando = conn.prepareStatement(
-                "INSERT INTO usuario (email, login, senha, data) VALUES (?,?,?,?) "))
+                "INSERT INTO Usuario (email, login, senha, _data) VALUES (?,?,?,?)"))
         {
             comando.setString(1, usuario.getEmail());
             comando.setString(2, usuario.getLogin());
@@ -48,14 +48,14 @@ public class UsuarioDao {
 
         try (Connection conexao = gerenciadorBd.conectar(); 
              PreparedStatement comando = conexao.prepareStatement(
-             "SELECT id, email, login, senha FROM usuario");
+             "SELECT id, email, login, senha FROM Usuario");
              ResultSet tabela = comando.executeQuery()
             ) 
         {
             while (tabela.next()) {
                 UsuarioDto usuario = new UsuarioDto();
 
-                usuario.setId(tabela.getLong("id"));
+                usuario.setId(tabela.getInt("id"));
                 usuario.setEmail(tabela.getString("email"));
                 usuario.setLogin(tabela.getString("usuario"));
                 usuario.setSenha(tabela.getString("senha"));
@@ -71,19 +71,20 @@ public class UsuarioDao {
 
         try (Connection conexao = gerenciadorBd.conectar(); 
              PreparedStatement comando = conexao.prepareStatement(
-             "SELECT email, login, senha FROM usuario WHERE id = ? OR WHERE email = ? OR WHERE usuario = ?")
+             "SELECT id, email, login, senha FROM Usuario WHERE email = ? OR login = ?")
             ) 
         {
-            comando.setLong(1, usuario.getId());
-            comando.setString(2, usuario.getEmail());
-            comando.setString(3, usuario.getLogin());
+           
+            comando.setString(1, usuario.getEmail());
+            comando.setString(2, usuario.getLogin());
   
             ResultSet tabela = comando.executeQuery();
 
             boolean existeUsuario = false;
             
             if (tabela.next()) {
-            
+                
+                usuario.setId(tabela.getInt("id"));
                 usuario.setEmail(tabela.getString("email"));
                 usuario.setLogin(tabela.getString("login"));
                 usuario.setSenha(tabela.getString("senha"));
@@ -93,7 +94,7 @@ public class UsuarioDao {
             
             if(!existeUsuario)
             {
-                usuario.setId(0L);
+                usuario.setId(0);
             }
         }
        
@@ -103,7 +104,7 @@ public class UsuarioDao {
     public void alterar(UsuarioDto usuario) throws Exception {
         try (Connection conexao = gerenciadorBd.conectar(); 
              PreparedStatement comando = conexao.prepareStatement(
-             "UPDATE usuario SET email = ?, login = ?, senha = ? WHERE id = ?")
+             "UPDATE Usuario SET email = ?, login = ?, senha = ? WHERE id = ?")
             ) 
         {
             comando.setString(1, usuario.getEmail());
@@ -118,7 +119,7 @@ public class UsuarioDao {
     public void excluir(UsuarioDto usuario) throws Exception {
         try (Connection conexao = gerenciadorBd.conectar(); 
              PreparedStatement comando = conexao.prepareStatement(
-             "DELETE FROM usuario WHERE id = ?")
+             "DELETE FROM Usuario WHERE id = ?")
             ) 
         {
             comando.setLong(1, usuario.getId());

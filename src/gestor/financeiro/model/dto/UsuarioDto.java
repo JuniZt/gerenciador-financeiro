@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class UsuarioDto {
     
 
-    private Long id;
+    private Integer id;
     
     private String email;
     
@@ -30,7 +30,7 @@ public class UsuarioDto {
     public UsuarioDto() {
     }
 
-    public UsuarioDto(Long id, String email, String login, String senha, LocalDate data) {
+    public UsuarioDto(Integer id, String email, String login, String senha, LocalDate data) {
         this.id = id;
         this.email = email;
         this.login = login;
@@ -38,11 +38,11 @@ public class UsuarioDto {
         this.data = data;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
